@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormRequestProduto;
+use App\Models\Componentes;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 
@@ -34,11 +35,31 @@ class ProdutoController extends Controller
     public function cadastrarProduto(FormRequestProduto $request){
       if($request->method()== 'POST'){
         $data = $request->all();
+        //formatar os dados do campo valor
+        $componentes = new Componentes();
+        $data['valor'] = $componentes->formatacaoMascaraDinheiroDecimal($data['valor']);
         Produto::create($data);
 
         return redirect(route('produto.index'));
       }
 
       return view('pagina.produtos.create');
+    }
+
+    public function atualizarProduto(FormRequestProduto $request,$id){
+       if($request->method()== 'PUT'){
+        //ATUALIZAR PRODUTO
+           $data = $request->all();
+            //formatar os dados do campo valor
+            $componentes = new Componentes();
+            $data['valor'] = $componentes->formatacaoMascaraDinheiroDecimal($data['valor']);
+
+            $buscaRegistro = Produto::find($id);
+            $buscaRegistro->update($data);
+            return redirect(route('produto.index'));
+          }
+          //mostrar dados
+            $findProduto = Produto::where('id','=',$id)->first();
+          return view('pagina.produtos.atualiza',compact('findProduto'));
     }
 }
