@@ -40,6 +40,7 @@ Route::prefix('vendas')->group(function () {
     //rotas para cadastro
     Route::get('/cadastrarVenda',[VendaController::class,'cadastrarVenda'])->name('cadastrar.venda');
     Route::post('/cadastrarVenda',[VendaController::class,'cadastrarVenda'])->name('cadastrar.venda');
+    Route::get('/enviaComprovantePorEmail/{id}',[VendaController::class,'enviaComprovantePorEmail'])->name('enviaComprovantePorEmail.venda');
 });
 
 
