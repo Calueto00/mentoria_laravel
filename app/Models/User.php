@@ -42,4 +42,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getUsuariosPesquisarIndex(string $search =''){
+        $produto = $this->where(function($query) use ($search){
+            if($search){
+                $query->where('nome','=',$search);
+                $query->orWhere('nome','LIKE',"{$search}%");
+            }
+        })->get();
+        return $produto;
+    }
 }
